@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+{#    <h1>{{ page_name }}</h1>#}
+    <div>
+{#        <p>#}
+{#            {{ movies_dir }}#}
+{#        </p>#}
+{#        <p>{{ movies.id }}</p>#}
+        <h1>{{ movies.title }}</h1>
+        <img src="https://image.tmdb.org/t/p/w500/{{ movies.poster_path }}" style="height: 25%; width: 25%" alt="">
+
+        <div class="container">
+            <h3>{{ movie_collection.name }}</h3>
+            <h5>More from collection:</h5>
+            <div class="row">
+                {% for related_film in related_films %}
+                    <a href="{{ url_for('movies', m_id=related_film.id) }}">
+                        <div class="col-sm-3">
+                            <div class="card">
+                                <img class="related-film-img" style="width: 50%; height: 30%;"
+                                     src="https://image.tmdb.org/t/p/w500/{{ related_film.poster_path }}" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title"></h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ related_film.title }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

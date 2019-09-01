@@ -1,0 +1,10 @@
+*.csv
+database
+filmography.db
+.env
+.ipynb_checkpoints
+.idea/
+migrations
+__pycache__/
+*.ipynb
+venv/

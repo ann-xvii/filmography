@@ -1,0 +1,9 @@
+p {
+    color: black;
+    font-size: 1em;
+}
+
+.related-film-img {
+    width: 40%;
+    height: 40%;
+}
