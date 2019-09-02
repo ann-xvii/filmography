@@ -22,6 +22,13 @@ class MoviesMetadata(Base):
     query = db_session.query_property()
 
 
+class Genres(Base):
+    __table__ = Base.metadata.tables['genres']
+
+    db_session = scoped_session(sessionmaker(bind=engine))
+    query = db_session.query_property()
+
+
 class Ratings(Base):
     __table__ = Base.metadata.tables['ratings']
 

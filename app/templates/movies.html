@@ -20,7 +20,7 @@
                 </div>
                 <div>
                     <p><b>Release Date:</b> {{ movies.release_date }} {% if movies.runtime %}| <b>Runtime: </b>
-                        {{ movies.runtime }}{% endif %}</p>
+                        {{ movies.runtime }}{% endif %} {% if movies_meta.genre_list %}| <b>Genres: </b>{{ movies_meta.genre_list  }}{% endif %}</p>
                 </div>
                 {% if movies_meta.formatted_revenue %}
                     <div>
@@ -46,7 +46,7 @@
                             <b>Avg Rating:</b> {{ movies_meta.avg_rating }} vs <b>Cost:</b>
                             {{ movies_meta.formatted_budget }}
                         {% else %}
-                            <b>Cost:</b> {{ movies_meta.formatted_budget }}, Avg Rating Unavailable
+                            <b>Cost:</b> {{ movies_meta.formatted_budget }}, <b>Avg Rating:</b> Unavailable
                         {% endif %}
                     </p>
                 </div>
@@ -58,10 +58,7 @@
                 </div>
                 {% if movies_meta.spoken_languages %}
                     <div>
-                        <p><b>Spoken Languages: </b></p>
-                        {% for language in movies_meta.spoken_languages %}
-                            <p>{{ language.name }}</p>
-                        {% endfor %}
+                        <p><b>Spoken Languages: </b> {{ movies_meta.spoken_languages }}</p>
                     </div>
                 {% endif %}
             </div>

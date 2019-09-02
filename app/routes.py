@@ -3,7 +3,7 @@ import os
 from flask import render_template, url_for
 from money import Money
 from app import app
-from app.models import MoviesMetadata, MovieCollection, Ratings
+from app.models import MoviesMetadata, MovieCollection, Ratings, Genres
 
 
 @app.route('/')
@@ -27,6 +27,15 @@ def movies(m_id=862):
         related_films = [rf for rf in related_films if rf.id != movie_id]
         avg_rating = Ratings.average(movie_id)
 
+        # genres
+
+        genres = Genres.query.filter_by(film_id=movie_id).all()
+        if genres:
+            genre_list = [g.name for g in genres]
+            genre_list = ", ".join(genre_list)
+        else:
+            genre_list = None
+
         if movie.revenue:
             formatted_revenue = Money(amount=movie.revenue, currency='USD')
         else:
@@ -34,8 +43,10 @@ def movies(m_id=862):
 
         if movie.spoken_languages:
             spoken_languages = ast.literal_eval(movie.spoken_languages)
+            lang_list = [g['name'] for g in spoken_languages]
+            lang_list = ", ".join(lang_list)
         else:
-            spoken_languages = None
+            lang_list = None
 
         if movie.budget:
             # TODO: location aware and correct currency
@@ -44,11 +55,12 @@ def movies(m_id=862):
             formatted_budget = Money(amount=0, currency='USD')
 
         movies_meta = dict()
-        movies_meta['spoken_languages'] = spoken_languages
+        movies_meta['spoken_languages'] = lang_list
         movies_meta['formatted_budget'] = formatted_budget
         movies_meta['formatted_revenue'] = formatted_revenue
         movies_meta['related_films'] = related_films
         movies_meta['avg_rating'] = avg_rating
+        movies_meta['genre_list'] = genre_list
 
         return render_template('movies.html', title='Movies', page_name='Movies', movies=movie, movies_dir=movies_dir,
                                movie_collection=movie_collection, movies_meta=movies_meta,
