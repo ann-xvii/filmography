@@ -88,6 +88,23 @@ class Talent(Base):
             return result[0]
         return result
 
+    @staticmethod
+    def genre_list(talent_id):
+        query_string = """select distinct name
+                            from genres where film_id in (
+                                select distinct film_id
+                                from movie_cast
+                                where movie_cast.id = {}
+                                union
+                                distinct
+                                select distinct film_id
+                                from crew
+                                where crew.id = {})
+                                order by name""".format(talent_id, talent_id)
+        sql = text(query_string)
+        result = engine.execute(sql).fetchall()
+        return result
+
 
 class Ratings(Base):
     __table__ = Base.metadata.tables['ratings']

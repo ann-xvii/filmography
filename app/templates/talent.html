@@ -18,11 +18,18 @@
                 <h3>Crew</h3>
 
                 {% if talent_data.cumulative_revenue %}
-                    <h4>Cumulative Revenue: {{ talent_data.cumulative_revenue }}</h4>
+                    <h4>Cumulative Revenue: </h4>
+                    <p>{{ talent_data.cumulative_revenue }}</p>
                 {% endif %}
 
                 {% if talent_data.average_rating %}
-                    <h4>Rating Across Filmography: {{ talent_data.average_rating }}</h4>
+                    <h4>Rating Across Filmography:</h4>
+                    <p> {{ talent_data.average_rating }}</p>
+                {% endif %}
+
+                {% if talent_data.genres %}
+                    <h4>Genres: </h4>
+                    <p>{{ talent_data.genres }}</p>
                 {% endif %}
             </div>
         </div>
