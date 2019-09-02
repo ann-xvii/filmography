@@ -79,6 +79,8 @@ let svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
+let g = svg.append('g')
+    .attr('class', 'all');
 
 // set up the simulation object, currently with nodes only
 let simulation = d3.forceSimulation()
@@ -120,7 +122,7 @@ const show_info = function (d) {
 };
 
 // draw circles for the nodes
-let node = svg.append("g")
+let node = g.append("g")
     .attr("class", "nodes")
     .selectAll("circle")
     .data(nodes_data)
@@ -161,8 +163,7 @@ function tickActions() {
 
 //specify what to do when zoom event listener is triggered
 function zoom_actions(){
-  node.attr("transform", d3.event.transform);
-  link.attr("transform", d3.event.transform);
+  g.attr("transform", d3.event.transform);
 }
 zoom_handler(svg);
 
@@ -178,7 +179,7 @@ let link_force = d3.forceLink(links_data)
 simulation.force("links", link_force);
 
 // draw lines for the links between nodes
-let link = svg.append("g")
+let link = g.append("g")
     .attr("class", "links")
     .selectAll("line")
     .data(links_data)
