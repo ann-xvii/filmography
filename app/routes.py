@@ -3,7 +3,7 @@ import os
 from flask import render_template, url_for
 from money import Money
 from app import app
-from app.models import MoviesMetadata, MovieCollection, Ratings, Genres
+from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCast, Crew, Talent
 
 
 @app.route('/')
@@ -71,9 +71,26 @@ def movies(m_id=862):
                                dated_url_for=dated_url_for)
 
 
-@app.route('/talent')
-def talent():
-    return render_template('talent.html', title='Talent', page_name='Talent')
+@app.route('/talent/<talent_id>')
+def talent(talent_id=524):
+    talent_id = int(talent_id)
+
+    talent_info = Talent.query.filter_by(id=talent_id).first()
+    crew_member_info = Crew.query.filter_by(id=talent_id).all()
+    cast_member_info = MovieCast.query.filter_by(id=talent_id).all()
+
+    talent_data = dict()
+    cast_data = dict()
+    crew_data = dict()
+
+    if talent_info:
+        talent_data['name'] = talent_info.name
+        talent_data['profile_path'] = talent_info.profile_path
+        rev = Talent.cumulative_revenue(talent_id)
+        rating = Talent.average_rating(talent_id)
+        talent_data['cumulative_revenue'] = Money(amount=rev, currency='USD') if rev else None
+        talent_data['average_rating'] = round(rating, 2) if rating else None
+    return render_template('talent.html', title='Talent', talent_data=talent_data)
 
 
 @app.route('/graph')

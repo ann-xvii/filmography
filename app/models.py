@@ -29,6 +29,66 @@ class Genres(Base):
     query = db_session.query_property()
 
 
+class Crew(Base):
+    __table__ = Base.metadata.tables['crew']
+
+    db_session = scoped_session(sessionmaker(bind=engine))
+    query = db_session.query_property()
+
+
+class MovieCast(Base):
+    __table__ = Base.metadata.tables['movie_cast']
+
+    db_session = scoped_session(sessionmaker(bind=engine))
+    query = db_session.query_property()
+
+
+class Talent(Base):
+    __table__ = Base.metadata.tables['talent']
+
+    db_session = scoped_session(sessionmaker(bind=engine))
+    query = db_session.query_property()
+
+    @staticmethod
+    def cumulative_revenue(talent_id):
+        query_string = """select sum(revenue)
+                            from movies
+                            where id in (
+                                select distinct film_id
+                                from movie_cast
+                                where movie_cast.id = {}
+                                union
+                                distinct
+                                select distinct film_id
+                                from crew
+                                where crew.id = {})""".format(talent_id, talent_id)
+        sql = text(query_string)
+        result = engine.execute(sql).first()
+        if result:
+            return result[0]
+        return result
+
+    @staticmethod
+    def average_rating(talent_id):
+        query_string = """select avg(rating)
+                            from ratings
+                            where movieId in (
+                                select distinct film_id
+                                from movie_cast
+                                where movie_cast.id = {}
+                                union
+                                distinct
+                                select distinct film_id
+                                from crew
+                                where crew.id = {}
+)""".format(talent_id, talent_id)
+        sql = text(query_string)
+        result = engine.execute(sql).first()
+        if result:
+            return result[0]
+        return result
+
+
 class Ratings(Base):
     __table__ = Base.metadata.tables['ratings']
 
@@ -37,7 +97,11 @@ class Ratings(Base):
 
     @staticmethod
     def average(movie_id):
-        query_string = """select avg(rating) from ratings left join movies on ratings.movieid = movies.id where movieid={}""".format(
+        query_string = """select avg(rating)
+                            from ratings 
+                            left join movies
+                             on ratings.movieid = movies.id
+                              where movieid={}""".format(
             movie_id)
         sql = text(query_string)
         result = engine.execute(sql).first()[0]
