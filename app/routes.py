@@ -101,9 +101,11 @@ def talent(talent_id=524):
         if cast_member_info:
             top_n_roles = Talent.top_ten_roles(talent_id)
             cast_data['primary_roles'] = top_n_roles if top_n_roles else None
-        # if crew_member_info:
-        # display additional info for crew
-        return render_template('talent.html', title='Talent', talent_data=talent_data, cast_data=cast_data)
+        if crew_member_info:
+            crew_roles = Talent.ten_crew_credits(talent_id)
+            crew_data['crew_roles'] = crew_roles if crew_roles else None
+        return render_template('talent.html', title='Talent', talent_data=talent_data, cast_data=cast_data,
+                               crew_data=crew_data)
     else:
         message = 'Talent with id={} not found'.format(talent_id)
         return render_template('index.html', title='Filmography', page_name='Talent', message=message,

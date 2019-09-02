@@ -146,6 +146,20 @@ class Talent(Base):
         result = engine.execute(sql).fetchall()
         return result
 
+    @staticmethod
+    def ten_crew_credits(talent_id):
+        query_string = """
+                            select c.film_id, m.title, c.job
+                            from talent
+                                     inner join crew c on talent.id = c.id
+                                     inner join movies m on m.id = c.film_id
+                            where talent.id = {}
+                            limit 10
+        """.format(talent_id)
+        sql = text(query_string)
+        result = engine.execute(sql).fetchall()
+        return result
+
 
 class Ratings(Base):
     __table__ = Base.metadata.tables['ratings']

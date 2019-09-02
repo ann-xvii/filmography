@@ -23,7 +23,18 @@
                     {% endif %}
                 {% endif %}
 
-                <h3>Crew</h3>
+                {% if crew_data %}
+                    {% if crew_data.crew_roles %}
+                        <h3>Crew</h3>
+                        <h5>Credits</h5>
+                        <ul>
+                            {% for role in crew_data.crew_roles %}
+                                <li><b>{{ role[2] }}</b> - <a
+                                        href="{{ url_for('movies', m_id=role[0]) }}">{{ role[1] }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endif %}
 
                 {% if talent_data.cumulative_revenue %}
                     <h4>Cumulative Revenue: </h4>
