@@ -9,17 +9,18 @@
         {#        <p>{{ movies.id }}</p>#}
         <h1>{{ movies.title }}</h1>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <img class='main-img' src="https://image.tmdb.org/t/p/w500/{{ movies.poster_path }}"
                      style="height: 70%; width: 75%"
                      alt="">
             </div>
-            <div class="col-md-8">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                 <div>
                     <p><b>Original Title:</b> {{ movies.original_title }}</p>
                 </div>
                 <div>
-                    <p><b>Release Date:</b> {{ movies.release_date }} {% if movies.runtime %}| <b>Runtime: </b>{{ movies.runtime }}{% endif %}</p>
+                    <p><b>Release Date:</b> {{ movies.release_date }} {% if movies.runtime %}| <b>Runtime: </b>
+                        {{ movies.runtime }}{% endif %}</p>
                 </div>
                 {% if movies_meta.formatted_revenue %}
                     <div>
@@ -42,7 +43,8 @@
                     <p>
                         <b>Efficiency -> </b>
                         {% if movies_meta.avg_rating %}
-                            <b>Avg Rating:</b> {{ movies_meta.avg_rating }} vs <b>Cost:</b> {{ movies_meta.formatted_budget }}
+                            <b>Avg Rating:</b> {{ movies_meta.avg_rating }} vs <b>Cost:</b>
+                            {{ movies_meta.formatted_budget }}
                         {% else %}
                             <b>Cost:</b> {{ movies_meta.formatted_budget }}, Avg Rating Unavailable
                         {% endif %}

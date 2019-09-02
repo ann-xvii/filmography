@@ -15,32 +15,31 @@ def index():
 
 @app.route('/movies/<m_id>')
 def movies(m_id=862):
-    # Movies.query.filter(Movies.id == '862').all()
     movie_id = int(m_id)
-    movies = MoviesMetadata.query.get(movie_id)
+    movie = MoviesMetadata.query.get(movie_id)
 
-    if movies:
-        movies_dir = dir(movies)
+    if movie:
+        movies_dir = dir(movie)
         movie_collection = MovieCollection.query.filter_by(film_id=movie_id).first()
 
         # related films
-        related_films = MoviesMetadata.query.filter_by(collection_id=movies.collection_id).all()
+        related_films = MoviesMetadata.query.filter_by(collection_id=movie.collection_id).all()
         related_films = [rf for rf in related_films if rf.id != movie_id]
         avg_rating = Ratings.average(movie_id)
 
-        if movies.revenue:
-            formatted_revenue = Money(amount=movies.revenue, currency='USD')
+        if movie.revenue:
+            formatted_revenue = Money(amount=movie.revenue, currency='USD')
         else:
             formatted_revenue = Money(amount=0, currency='USD')
 
-        if movies.spoken_languages:
-            spoken_languages = ast.literal_eval(movies.spoken_languages)
+        if movie.spoken_languages:
+            spoken_languages = ast.literal_eval(movie.spoken_languages)
         else:
             spoken_languages = None
 
-        if movies.budget:
+        if movie.budget:
             # TODO: location aware and correct currency
-            formatted_budget = Money(amount=movies.budget, currency='USD')
+            formatted_budget = Money(amount=movie.budget, currency='USD')
         else:
             formatted_budget = Money(amount=0, currency='USD')
 
@@ -51,7 +50,7 @@ def movies(m_id=862):
         movies_meta['related_films'] = related_films
         movies_meta['avg_rating'] = avg_rating
 
-        return render_template('movies.html', title='Movies', page_name='Movies', movies=movies, movies_dir=movies_dir,
+        return render_template('movies.html', title='Movies', page_name='Movies', movies=movie, movies_dir=movies_dir,
                                movie_collection=movie_collection, movies_meta=movies_meta,
                                dated_url_for=dated_url_for)
     else:
