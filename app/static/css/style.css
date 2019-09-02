@@ -7,3 +7,8 @@ p {
     width: 40%;
     height: 40%;
 }
+
+img.main-img {
+    height: 70%;
+    width: 75%;
+}

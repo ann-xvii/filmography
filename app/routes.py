@@ -1,8 +1,11 @@
 import os
 
 from flask import render_template, url_for, session
+from money import Money
+from sqlalchemy.sql import func
+
 from app import app
-from app.models import engine, MoviesMetadata, MovieCollection
+from app.models import engine, MoviesMetadata, MovieCollection, Ratings
 from sqlalchemy.orm import scoped_session, sessionmaker, Query
 
 
@@ -27,9 +30,18 @@ def movies(m_id=862):
         # related films
         related_films = MoviesMetadata.query.filter_by(collection_id=movies.collection_id).all()
         related_films = [rf for rf in related_films if rf.id != movie_id]
+        avg_rating = Ratings.average(movie_id)
+        if movies.budget:
+            # TODO: location aware and correct currency
+            formatted_budget = Money(amount=movies.budget, currency='USD')
+        else:
+            formatted_budget = Money(amount=0, currency='USD')
+
+        # avg_rating = func.avg(Ratings.query.filter_by(movieid=movie_id))
+
         return render_template('movies.html', title='Movies', page_name='Movies', movies=movies, movies_dir=movies_dir,
                                movie_collection=movie_collection, related_films=related_films,
-                               dated_url_for=dated_url_for)
+                               dated_url_for=dated_url_for, avg_rating=avg_rating, formatted_budget=formatted_budget)
     else:
         message = 'Movie with id={} not found'.format(m_id)
         return render_template('index.html', title='Filmography', page_name='Movies', message=message,

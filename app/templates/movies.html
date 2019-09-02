@@ -1,15 +1,31 @@
 {% extends 'base.html' %}
 
 {% block app_content %}
-{#    <h1>{{ page_name }}</h1>#}
+    {#    <h1>{{ page_name }}</h1>#}
     <div>
-{#        <p>#}
-{#            {{ movies_dir }}#}
-{#        </p>#}
-{#        <p>{{ movies.id }}</p>#}
+        {#        <p>#}
+        {#            {{ movies_dir }}#}
+        {#        </p>#}
+        {#        <p>{{ movies.id }}</p>#}
         <h1>{{ movies.title }}</h1>
-        <img src="https://image.tmdb.org/t/p/w500/{{ movies.poster_path }}" style="height: 25%; width: 25%" alt="">
-
+        <div class="row">
+            <div class="col-md-4">
+                <img class='main-img' src="https://image.tmdb.org/t/p/w500/{{ movies.poster_path }}"
+                     style="height: 70%; width: 75%"
+                     alt="">
+            </div>
+            <div class="col-md-8">
+                <div>
+                    <h5>Efficiency</h5>
+                    {% if avg_rating %}
+                        <p>Avg Rating: {{ avg_rating }} vs Cost: {{ formatted_budget }}</p>
+                    {% else %}
+                        <p>Cost: {{ formatted_budget }}</p>
+                        <p>Avg Rating Unavailable</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
         <div class="container">
             <h3>{{ movie_collection.name }}</h3>
             <h5>More from collection:</h5>

@@ -1,5 +1,5 @@
 from app import db
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 import os
 from sqlalchemy.orm import relationship, backref, scoped_session, sessionmaker
@@ -20,6 +20,23 @@ class MoviesMetadata(Base):
 
     db_session = scoped_session(sessionmaker(bind=engine))
     query = db_session.query_property()
+
+
+class Ratings(Base):
+    __table__ = Base.metadata.tables['ratings']
+
+    db_session = scoped_session(sessionmaker(bind=engine))
+    query = db_session.query_property()
+
+    @staticmethod
+    def average(movie_id):
+        query_string = """select avg(rating) from ratings left join movies on ratings.movieid = movies.id where movieid={}""".format(
+            movie_id)
+        sql = text(query_string)
+        result = engine.execute(sql).first()[0]
+        if result:
+            result = round(result, 1)
+        return result
 
 
 # class MoviesMetadata(db.Model):
