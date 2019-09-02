@@ -43,13 +43,20 @@ let tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function (d) {
-        return "<strong>" + d.name + "</strong>";
+        if (d.type === 'talent') {
+            return "<strong><a href='{{url_for('" + d.type + "', talent_id=" + d.id + ")}}'>" + d.name + "</a></strong>"
+        } else {
+            return "<strong><a href='{{url_for('" + d.type + "', m_id=" + d.id + ")}}'>" + d.name + "</a></strong>"
+        }
     });
 svg.call(tip);
 
 const show_info = function (d) {
-    d3.select("#point-info").text("This is point " + d.name + ". "
-        + "Search id: " + d.id + ".");
+    if (d.type === 'movies') {
+        d3.select("#point-info").html("<span>This is <a href='/movies/" + d.id + "'>" + d.name + "</a></span>");
+    } else {
+        d3.select("#point-info").html("<span>This is <a href='/talent/" + d.id + "'>" + d.name + "</a></span>");
+    }
 };
 
 // draw circles for the nodes
