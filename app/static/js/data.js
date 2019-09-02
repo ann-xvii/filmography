@@ -38,10 +38,19 @@ simulation
     .force("center_force", d3.forceCenter(width / 2, height / 2));
 
 
-// Define the div for the tooltip
-let div = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+// tooltip
+let tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function (d) {
+        return "<strong>" + d.name + "</strong>";
+    });
+svg.call(tip);
+
+const show_info = function (d) {
+    d3.select("#point-info").text("This is point " + d.name + ". "
+        + "Search id: " + d.id + ".");
+};
 
 // draw circles for the nodes
 let node = svg.append("g")
@@ -51,22 +60,10 @@ let node = svg.append("g")
     .enter()
     .append("circle")
     .attr("r", 5)
-    .attr("fill", circleColour);
-// .on('mouseover', function (d) {
-//     console.log(d);
-//     console.log(d3.event.pageX);
-//     div.transition()
-//             .duration(200)
-//             .style("opacity", .9);
-//     div.html(d.name)
-//         .style('left', (d3.event.pageX) + 'px')
-//         .style('top', (d3.event.pageY - 28) + 'px')
-// })
-// .on("mouseout", function (d) {
-//     div.transition()
-//         .duration(500)
-//         .style("opacity", 0);
-// });
+    .attr("fill", circleColour)
+    .on('mousedown', show_info)
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);
 
 function tickActions() {
     //update circle positions each tick of the simulation
@@ -131,15 +128,6 @@ function linkColour(d) {
         return "red";
     }
 }
-
-
-// const drag_handler = d3.drag()
-//     .on("drag", function(d) {
-//           d3.select(this)
-//             .attr("cx", d.x = d3.event.x  )
-//             .attr("cy", d.y = d3.event.y  );
-//             });
-//
 
 const drag_handler = d3.drag()
     .on("start", drag_start)

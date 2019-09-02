@@ -2,10 +2,16 @@
 
 {% block app_content %}
     <h1>{{ page_name }}</h1>
+
+    <div id="info">
+        <div id="point-info">Click on a node</div>
+    </div>
+
     <svg width="960" height="600"></svg>
 
     {% block scripts %}
         <script src="https://d3js.org/d3.v5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
         <script src="{{ url_for('static', filename='js/data.js') }}"></script>
     {% endblock %}
 {% endblock %}
