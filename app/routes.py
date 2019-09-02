@@ -1,12 +1,9 @@
+import ast
 import os
-
-from flask import render_template, url_for, session
+from flask import render_template, url_for
 from money import Money
-from sqlalchemy.sql import func
-
 from app import app
-from app.models import engine, MoviesMetadata, MovieCollection, Ratings
-from sqlalchemy.orm import scoped_session, sessionmaker, Query
+from app.models import MoviesMetadata, MovieCollection, Ratings
 
 
 @app.route('/')
@@ -20,28 +17,43 @@ def index():
 def movies(m_id=862):
     # Movies.query.filter(Movies.id == '862').all()
     movie_id = int(m_id)
-
     movies = MoviesMetadata.query.get(movie_id)
+
     if movies:
         movies_dir = dir(movies)
-        # movie_collection = None
         movie_collection = MovieCollection.query.filter_by(film_id=movie_id).first()
 
         # related films
         related_films = MoviesMetadata.query.filter_by(collection_id=movies.collection_id).all()
         related_films = [rf for rf in related_films if rf.id != movie_id]
         avg_rating = Ratings.average(movie_id)
+
+        if movies.revenue:
+            formatted_revenue = Money(amount=movies.revenue, currency='USD')
+        else:
+            formatted_revenue = Money(amount=0, currency='USD')
+
+        if movies.spoken_languages:
+            spoken_languages = ast.literal_eval(movies.spoken_languages)
+        else:
+            spoken_languages = None
+
         if movies.budget:
             # TODO: location aware and correct currency
             formatted_budget = Money(amount=movies.budget, currency='USD')
         else:
             formatted_budget = Money(amount=0, currency='USD')
 
-        # avg_rating = func.avg(Ratings.query.filter_by(movieid=movie_id))
+        movies_meta = dict()
+        movies_meta['spoken_languages'] = spoken_languages
+        movies_meta['formatted_budget'] = formatted_budget
+        movies_meta['formatted_revenue'] = formatted_revenue
+        movies_meta['related_films'] = related_films
+        movies_meta['avg_rating'] = avg_rating
 
         return render_template('movies.html', title='Movies', page_name='Movies', movies=movies, movies_dir=movies_dir,
-                               movie_collection=movie_collection, related_films=related_films,
-                               dated_url_for=dated_url_for, avg_rating=avg_rating, formatted_budget=formatted_budget)
+                               movie_collection=movie_collection, movies_meta=movies_meta,
+                               dated_url_for=dated_url_for)
     else:
         message = 'Movie with id={} not found'.format(m_id)
         return render_template('index.html', title='Filmography', page_name='Movies', message=message,

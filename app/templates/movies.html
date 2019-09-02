@@ -3,9 +3,9 @@
 {% block app_content %}
     {#    <h1>{{ page_name }}</h1>#}
     <div>
-        {#        <p>#}
-        {#            {{ movies_dir }}#}
-        {#        </p>#}
+        <p>
+            {{ movies_dir }}
+        </p>
         {#        <p>{{ movies.id }}</p>#}
         <h1>{{ movies.title }}</h1>
         <div class="row">
@@ -16,21 +16,59 @@
             </div>
             <div class="col-md-8">
                 <div>
-                    <h5>Efficiency</h5>
-                    {% if avg_rating %}
-                        <p>Avg Rating: {{ avg_rating }} vs Cost: {{ formatted_budget }}</p>
-                    {% else %}
-                        <p>Cost: {{ formatted_budget }}</p>
-                        <p>Avg Rating Unavailable</p>
-                    {% endif %}
+                    <p><b>Original Title:</b> {{ movies.original_title }}</p>
                 </div>
+                <div>
+                    <p><b>Release Date:</b> {{ movies.release_date }} {% if movies.runtime %}| <b>Runtime: </b>{{ movies.runtime }}{% endif %}</p>
+                </div>
+                {% if movies_meta.formatted_revenue %}
+                    <div>
+                        <p><b>Revenue: </b>{{ movies_meta.formatted_revenue }}</p>
+                    </div>
+                {% endif %}
+                {% if movies.overview %}
+                    <div>
+                        <p><b>Overview: </b><a href="{{ movies.overview }}">{{ movies.overview }}</a></p>
+                    </div>
+                {% endif %}
+
+                {% if movies.homepage %}
+                    <div>
+                        <p><b>Homepage: </b><a href="{{ movies.homepage }}">{{ movies.homepage }}</a></p>
+                    </div>
+                {% endif %}
+
+                <div>
+                    <p>
+                        <b>Efficiency -> </b>
+                        {% if movies_meta.avg_rating %}
+                            <b>Avg Rating:</b> {{ movies_meta.avg_rating }} vs <b>Cost:</b> {{ movies_meta.formatted_budget }}
+                        {% else %}
+                            <b>Cost:</b> {{ movies_meta.formatted_budget }}, Avg Rating Unavailable
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div>
+                    <p><b>Director</b></p>
+                    <p><b>Writers</b></p>
+                    <p><b>Stars</b></p>
+                </div>
+                {% if movies_meta.spoken_languages %}
+                    <div>
+                        <p><b>Spoken Languages: </b></p>
+                        {% for language in movies_meta.spoken_languages %}
+                            <p>{{ language.name }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         </div>
         <div class="container">
             <h3>{{ movie_collection.name }}</h3>
             <h5>More from collection:</h5>
             <div class="row">
-                {% for related_film in related_films %}
+                {% for related_film in movies_meta.related_films %}
                     <a href="{{ url_for('movies', m_id=related_film.id) }}">
                         <div class="col-sm-3">
                             <div class="card">
