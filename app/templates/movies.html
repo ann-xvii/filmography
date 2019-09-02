@@ -20,7 +20,8 @@
                 </div>
                 <div>
                     <p><b>Release Date:</b> {{ movies.release_date }} {% if movies.runtime %}| <b>Runtime: </b>
-                        {{ movies.runtime }}{% endif %} {% if movies_meta.genre_list %}| <b>Genres: </b>{{ movies_meta.genre_list  }}{% endif %}</p>
+                        {{ movies.runtime }}{% endif %} {% if movies_meta.genre_list %}| <b>Genres: </b>
+                        {{ movies_meta.genre_list }}{% endif %}</p>
                 </div>
                 {% if movies_meta.formatted_revenue %}
                     <div>
@@ -52,12 +53,27 @@
                 </div>
 
                 <div>
-                    <p><b>Director</b></p>
-                    <p><b>Writers</b></p>
-                    <p><b>Stars</b></p>
+                    {% if movies_meta.directors %}
+                        <p><b>Director:</b>
+                            {% for director in movies_meta.directors %}
+                                <a href="{{ url_for('talent', talent_id=director[1]) }}">{{ director[0] }}</a><br>
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+
+                    {% if movies_meta.cast %}
+                        <p><b>Featuring:</b></p>
+                        <ul>
+                            {% for actor in movies_meta.cast %}
+                                <li>
+                                    <a href="{{ url_for('talent', talent_id=actor[1]) }}">{{ actor[0] }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
                 {% if movies_meta.spoken_languages %}
-                    <div>
+                    <div><br>
                         <p><b>Spoken Languages: </b> {{ movies_meta.spoken_languages }}</p>
                     </div>
                 {% endif %}

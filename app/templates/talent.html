@@ -12,8 +12,18 @@
                      alt="">
             </div>
             <div class="col-sm-8 col-md-8">
-
-                <h3>Cast</h3>
+                {% if cast_data %}
+                    {% if cast_data.primary_roles %}
+                        <h3>Cast</h3>
+                        <h5>Primary Roles</h5>
+                        <ul>
+                            {% for role in cast_data.primary_roles %}
+                                <li><b>{{ role[0] }}</b> - <a
+                                        href="{{ url_for('movies', m_id=role[2]) }}">{{ role[1] }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endif %}
 
                 <h3>Crew</h3>
 

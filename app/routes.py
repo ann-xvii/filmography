@@ -20,6 +20,7 @@ def movies(m_id=862):
 
     if movie:
         movies_dir = dir(movie)
+        movies_meta = dict()
         movie_collection = MovieCollection.query.filter_by(film_id=movie_id).first()
 
         # related films
@@ -28,13 +29,16 @@ def movies(m_id=862):
         avg_rating = Ratings.average(movie_id)
 
         # genres
-
         genres = Genres.query.filter_by(film_id=movie_id).all()
-        if genres:
-            genre_list = [g.name for g in genres]
-            genre_list = ", ".join(genre_list)
-        else:
-            genre_list = None
+        genre_list = ", ".join([g.name for g in genres]) if genres else None
+
+        # directors
+        directors = MoviesMetadata.directors(movie_id)
+        movies_meta['directors'] = directors if directors else None
+
+        # cast
+        top_10_cast = MoviesMetadata.cast(movie_id)
+        movies_meta['cast'] = top_10_cast if top_10_cast else None
 
         if movie.revenue:
             formatted_revenue = Money(amount=movie.revenue, currency='USD')
@@ -54,7 +58,6 @@ def movies(m_id=862):
         else:
             formatted_budget = Money(amount=0, currency='USD')
 
-        movies_meta = dict()
         movies_meta['spoken_languages'] = lang_list
         movies_meta['formatted_budget'] = formatted_budget
         movies_meta['formatted_revenue'] = formatted_revenue
@@ -92,7 +95,12 @@ def talent(talent_id=524):
         talent_data['cumulative_revenue'] = Money(amount=rev, currency='USD') if rev else None
         talent_data['average_rating'] = round(rating, 2) if rating else None
         talent_data['genres'] = ", ".join([g[0] for g in genres]) if genres else None
-    return render_template('talent.html', title='Talent', talent_data=talent_data)
+    if cast_member_info:
+        top_n_roles = Talent.top_ten_roles(talent_id)
+        cast_data['primary_roles'] = top_n_roles if top_n_roles else None
+    # if crew_member_info:
+    # display additional info for crew
+    return render_template('talent.html', title='Talent', talent_data=talent_data, cast_data=cast_data)
 
 
 @app.route('/graph')

@@ -21,6 +21,31 @@ class MoviesMetadata(Base):
     db_session = scoped_session(sessionmaker(bind=engine))
     query = db_session.query_property()
 
+    @staticmethod
+    def directors(movie_id):
+        query_string = """
+                            select name, id
+                            from crew
+                            where film_id = {}
+                              and job = 'Director'
+        """.format(movie_id)
+        sql = text(query_string)
+        result = engine.execute(sql).fetchall()
+        return result
+
+    @staticmethod
+    def cast(movie_id):
+        query_string = """
+                            select name, id
+                            from movie_cast
+                            where film_id = {}
+                            order by "order"
+                            limit 10
+            """.format(movie_id)
+        sql = text(query_string)
+        result = engine.execute(sql).fetchall()
+        return result
+
 
 class Genres(Base):
     __table__ = Base.metadata.tables['genres']
@@ -101,6 +126,22 @@ class Talent(Base):
                                 from crew
                                 where crew.id = {})
                                 order by name""".format(talent_id, talent_id)
+        sql = text(query_string)
+        result = engine.execute(sql).fetchall()
+        return result
+
+    @staticmethod
+    def top_ten_roles(talent_id):
+        query_string = """
+                            select character, movies.title, movies.id
+                            from movie_cast
+                                     inner join movies on movie_cast.film_id = movies.id
+                            where movie_cast.id = {}
+                              and character <> ''
+                              and title <> ''
+                            order by "order", character
+                            limit 10
+        """.format(talent_id)
         sql = text(query_string)
         result = engine.execute(sql).fetchall()
         return result
