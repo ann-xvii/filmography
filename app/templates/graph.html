@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block app_content %}
-<h1>{{ page_name }}</h1>
+    <h1>{{ page_name }}</h1>
+    <svg width="960" height="600"></svg>
 
+    {% block scripts %}
+        <script src="https://d3js.org/d3.v5.js"></script>
+        <script src="{{ url_for('static', filename='js/data.js') }}"></script>
+    {% endblock %}
 {% endblock %}

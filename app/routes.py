@@ -4,6 +4,8 @@ from flask import render_template, url_for
 from money import Money
 from app import app
 from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCast, Crew, Talent
+import numpy as np
+import json
 
 
 @app.route('/')
@@ -95,12 +97,17 @@ def talent(talent_id=524):
         talent_data['cumulative_revenue'] = Money(amount=rev, currency='USD') if rev else None
         talent_data['average_rating'] = round(rating, 2) if rating else None
         talent_data['genres'] = ", ".join([g[0] for g in genres]) if genres else None
-    if cast_member_info:
-        top_n_roles = Talent.top_ten_roles(talent_id)
-        cast_data['primary_roles'] = top_n_roles if top_n_roles else None
-    # if crew_member_info:
-    # display additional info for crew
-    return render_template('talent.html', title='Talent', talent_data=talent_data, cast_data=cast_data)
+
+        if cast_member_info:
+            top_n_roles = Talent.top_ten_roles(talent_id)
+            cast_data['primary_roles'] = top_n_roles if top_n_roles else None
+        # if crew_member_info:
+        # display additional info for crew
+        return render_template('talent.html', title='Talent', talent_data=talent_data, cast_data=cast_data)
+    else:
+        message = 'Talent with id={} not found'.format(talent_id)
+        return render_template('index.html', title='Filmography', page_name='Talent', message=message,
+                               dated_url_for=dated_url_for)
 
 
 @app.route('/graph')
