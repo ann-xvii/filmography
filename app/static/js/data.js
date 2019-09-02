@@ -84,6 +84,12 @@ let svg = d3.select("svg"),
 let simulation = d3.forceSimulation()
     .nodes(nodes_data);
 
+
+
+// zoom handler
+let zoom_handler = d3.zoom()
+    .on("zoom", zoom_actions);
+
 // add forces
 // add a charge to each node
 // add a centering force to center of svg
@@ -151,6 +157,14 @@ function tickActions() {
             return d.target.y;
         });
 }
+
+
+//specify what to do when zoom event listener is triggered
+function zoom_actions(){
+  node.attr("transform", d3.event.transform);
+  link.attr("transform", d3.event.transform);
+}
+zoom_handler(svg);
 
 simulation.on("tick", tickActions);
 
