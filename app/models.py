@@ -127,73 +127,11 @@ class Ratings(Base):
         return result
 
 
-# class MoviesMetadata(db.Model):
-#     __tablename__ = 'movies'
-#     index = db.Column(db.BigInteger)
-#     adult = db.Column(db.Text)
-#     belongs_to_collection = db.Column(db.Text())
-#     budget = db.Column(db.Text)
-#     genres = db.Column(db.Text)
-#     homepage = db.Column(db.Text)
-#     id = db.Column(db.Integer, primary_key=True)
-#     imdb_id = db.Column(db.String(50), index=True)
-#     original_language = db.Column(db.String(100))
-#     original_title = db.Column(db.Text, index=True)
-#     overview = db.Column(db.Text)
-#     popularity = db.Column(db.Float)
-#     poster_path = db.Column(db.String(200))
-#     production_companies = db.Column(db.Text)
-#     production_countries = db.Column(db.Text)
-#     release_date = db.Column(db.DateTime)
-#     revenue = db.Column(db.Integer)
-#     runtime = db.Column(db.Float)
-#     spoken_languages = db.Column(db.Text)
-#     status = db.Column(db.String(40))
-#     tagline = db.Column(db.Text)
-#     title = db.Column(db.Text, index=True)
-#     video = db.Column(db.Boolean)
-#     vote_average = db.Column(db.String)
-#     vote_count = db.Column(db.Integer)
-#     collection_id = db.Column(db.Integer, db.ForeignKey('movies.id'))  # collection has many movies
-#
-#     def __repr__(self):
-#         return '<MovieMetadata {}>'.format(self.title)
-
-
-# class Credit(db.Model):
-#     __tablename__ = 'credits'
-#     cast = db.Column(db.Text)
-#     crew = db.Column(db.Text)
-#     id = db.Column(db.Integer, db.ForeignKey('movies_metadata.id'), primary_key=True)
-#
-#     def __repr__(self):
-#         return '<Credits {}>'.format(self.id)
-#
-#
-# class Rating(db.Model):
-#     __tablename__ = 'ratings'
-#     user_id = db.Column(db.Integer, index=True)
-#     movie_id = db.Column(db.Integer, db.ForeignKey('movies_metadata.id'), primary_key=True, index=True)
-#     rating = db.Column(db.Float)
-#     timestamp = db.Column(db.DateTime, index=True)
-#
-#     def __repr__(self):
-#         return '<Ratings {}>'.format(self.movie_id)
-
-
 class MovieCollection(Base):
-    # __tablename__ = 'movie_collection'
     __table__ = Base.metadata.tables['movie_collection']
     __table_args__ = {'extend_existing': True}
     db_session = scoped_session(sessionmaker(bind=engine))
     query = db_session.query_property()
-
-    # index = db.Column(db.BigInteger)
-    # backdrop_path = db.Column(db.Text)
-    # film_id = db.Column(db.BigInteger, db.ForeignKey('movies.id'), primary_key=True)
-    # id = db.Column(db.BigInteger, primary_key=True)
-    # name = db.Column(db.Text)
-    # poster_path = db.Column(db.Text)
 
     def __repr__(self):
         return '<MovieCollection {}>'.format(self.name)
