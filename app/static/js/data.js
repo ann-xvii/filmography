@@ -14,7 +14,9 @@ let nodes_data = [
     {"name": "Trainspotting", "id": 627, type: "movies"},
     {"name": "Natalie Portman", "id": 524, type: "talent"},
     {"name": "Thor", "id": 10195, type: "movies"},
+    {"name": "Thor: Ragnarok", "id": 284053, type: "movies"},
     {"name": "Star Wars: Episode II - Attack of the Clones", "id": 1894, type: "movies"},
+    {"name": "Star Wars: Episode III - Revenge of the Sith", "id": 1895, type: "movies"},
     {"name": "Hayden Christensen", "id": 17244, type: "talent"},
     {"name": "Anthony Daniels", "id": 6, type: "talent"},
     {"name": "Chris Hemsworth", "id": 74568, type: "talent"},
@@ -31,7 +33,21 @@ let nodes_data = [
     {"name": "Heath Ledger", "id": 1810, type: "talent"},
     {"name": "Maggie Gyllenhaal", "id": 1579, type: "talent"},
     {"name": "Morgan Freeman", "id": 192, type: "talent"},
-
+    {"name": "Katie Holmes", "id": 3897, type: "talent"},
+    {"name": "Gary Oldman", "id": 64, type: "talent"},
+    {"name": "Cillian Murphy", "id": 2037, type: "talent"},
+    {"name": "Tom Wilkinson", "id": 207, type: "talent"},
+    {"name": "Anne Hathaway", "id": 1813, type: "talent"},
+    {"name": "Tom Hardy", "id": 2524, type: "talent"},
+    {"name": "Marion Cotillard", "id": 8293, type: "talent"},
+    {"name": "Joseph Gordon-Levitt", "id": 24045, type: "talent"},
+    {"name": "Cate Blanchett", "id": 112, type: "talent"},
+    {"name": "Idris Elba", "id": 17605, type: "talent"},
+    {"name": "Jeff Goldblum", "id": 4785, type: "talent"},
+    {"name": "Tessa Thompson", "id": 62561, type: "talent"},
+    {"name": "Karl Urban", "id": 1372, type: "talent"},
+    {"name": "Mark Ruffalo", "id": 103, type: "talent"},
+    {"name": "George Lucas", "id": 1, type: "talent"},
 ];
 
 //Relationships
@@ -40,6 +56,7 @@ let links_data = [
     {"source": "Christopher Nolan", "target": "Batman Begins", "type": "D"},
     {"source": "Christopher Nolan", "target": "The Dark Knight", "type": "D"},
     {"source": "Christopher Nolan", "target": "The Dark Knight Rises", "type": "D"},
+    {"source": "George Lucas", "target": "Star Wars: Episode I - The Phantom Menace", "type": "D"},
     {"source": "Christian Bale", "target": "The Dark Knight", "type": "A"},
     {"source": "Michael Caine", "target": "The Dark Knight", "type": "A"},
     {"source": "Heath Ledger", "target": "The Dark Knight", "type": "A"},
@@ -65,12 +82,46 @@ let links_data = [
     {"source": "Samuel L. Jackson", "target": "Star Wars: Episode II - Attack of the Clones", "type": "A"},
     {"source": "Frank Oz", "target": "Star Wars: Episode II - Attack of the Clones", "type": "A"},
     {"source": "Anthony Daniels", "target": "Star Wars: Episode II - Attack of the Clones", "type": "A"},
+    {"source": "Ewan McGregor", "target": "Star Wars: Episode III - Revenge of the Sith", "type": "A"},
+    {"source": "Natalie Portman", "target": "Star Wars: Episode III - Revenge of the Sith", "type": "A"},
+    {"source": "Samuel L. Jackson", "target": "Star Wars: Episode III - Revenge of the Sith", "type": "A"},
+    {"source": "Liam Neeson", "target": "Star Wars: Episode III - Revenge of the Sith", "type": "A"},
+    {"source": "Jake Lloyd", "target": "Star Wars: Episode III - Revenge of the Sith", "type": "A"},
+    {"source": "Ian McDiarmid", "target": "Star Wars: Episode III - Revenge of the Sith", "type": "A"},
+    {"source": "Frank Oz", "target": "Star Wars: Episode III - Revenge of the Sith", "type": "A"},
     {"source": "Natalie Portman", "target": "Thor", "type": "A"},
     {"source": "Chris Hemsworth", "target": "Thor", "type": "A"},
     {"source": "Tom Hiddleston", "target": "Thor", "type": "A"},
     {"source": "Anthony Hopkins", "target": "Thor", "type": "A"},
     {"source": "Stellan Skarsgård", "target": "Thor", "type": "A"},
-    {"source": "Kat Dennings", "target": "Thor", "type": "A"}
+    {"source": "Kat Dennings", "target": "Thor", "type": "A"},
+    {"source": "Chris Hemsworth", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Tom Hiddleston", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Anthony Hopkins", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Cate Blanchett", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Idris Elba", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Jeff Goldblum", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Tessa Thompson", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Karl Urban", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Mark Ruffalo", "target": "Thor: Ragnarok", "type": "A"},
+    {"source": "Christian Bale", "target": "Batman Begins", "type": "A"},
+    {"source": "Michael Caine", "target": "Batman Begins", "type": "A"},
+    {"source": "Liam Neeson", "target": "Batman Begins", "type": "A"},
+    {"source": "Katie Holmes", "target": "Batman Begins", "type": "A"},
+    {"source": "Gary Oldman", "target": "Batman Begins", "type": "A"},
+    {"source": "Cillian Murphy", "target": "Batman Begins", "type": "A"},
+    {"source": "Tom Wilkinson", "target": "Batman Begins", "type": "A"},
+    {"source": "Morgan Freeman", "target": "Batman Begins", "type": "A"},
+    {"source": "Christian Bale", "target": "The Dark Knight Rises", "type": "A"},
+    {"source": "Michael Caine", "target": "The Dark Knight Rises", "type": "A"},
+    {"source": "Morgan Freeman", "target": "The Dark Knight Rises", "type": "A"},
+    {"source": "Gary Oldman", "target": "The Dark Knight Rises", "type": "A"},
+    {"source": "Anne Hathaway", "target": "The Dark Knight Rises", "type": "A"},
+    {"source": "Tom Hardy", "target": "The Dark Knight Rises", "type": "A"},
+    {"source": "Marion Cotillard", "target": "The Dark Knight Rises", "type": "A"},
+    {"source": "Joseph Gordon-Levitt", "target": "The Dark Knight Rises", "type": "A"},
+    {"source": "Liam Neeson", "target": "The Dark Knight Rises", "type": "A"},
+
 ];
 
 
@@ -85,7 +136,6 @@ let g = svg.append('g')
 // set up the simulation object, currently with nodes only
 let simulation = d3.forceSimulation()
     .nodes(nodes_data);
-
 
 
 // zoom handler
@@ -162,9 +212,10 @@ function tickActions() {
 
 
 //specify what to do when zoom event listener is triggered
-function zoom_actions(){
-  g.attr("transform", d3.event.transform);
+function zoom_actions() {
+    g.attr("transform", d3.event.transform);
 }
+
 zoom_handler(svg);
 
 simulation.on("tick", tickActions);
