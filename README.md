@@ -89,3 +89,7 @@ TODO:
 - tests
 - clicking on node directly goes to talent or movie page -- as currently written, information about node is displayed at the top of the graph, and clicking on the name of the entity takes you to the detail page.
 - full-text search, to allow querying movie or talent by name instead of by id
+
+PERFORMANCE CONSIDERATIONS
+To reduce the reponse time to <200ms, first I would create an additional table updated periodically for the aggregate metrics by talent:  cumulative revenue, average rating across filmography.
+I also typically like to have smaller view functions and move logic to a service layer for more straightforward testing.  Additionally, not currently using caching; designing a sound caching strategy would also be useful
