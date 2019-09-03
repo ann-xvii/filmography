@@ -78,3 +78,8 @@ circle {
   top: 100%;
   left: 0;
 }
+
+text {
+  font-family: sans-serif;
+  font-size: 10px;
+}

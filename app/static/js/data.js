@@ -12,6 +12,7 @@ let nodes_data = [
     {"name": "Frank Oz", "id": 7908, type: "talent"},
     {"name": "Star Wars: Episode I - The Phantom Menace", "id": 1893, type: "movies"},
     {"name": "Trainspotting", "id": 627, type: "movies"},
+    {"name": "T2 Trainspotting", "id": 180863, type: "movies"},
     {"name": "Natalie Portman", "id": 524, type: "talent"},
     {"name": "Thor", "id": 10195, type: "movies"},
     {"name": "Thor: Ragnarok", "id": 284053, type: "movies"},
@@ -48,6 +49,7 @@ let nodes_data = [
     {"name": "Karl Urban", "id": 1372, type: "talent"},
     {"name": "Mark Ruffalo", "id": 103, type: "talent"},
     {"name": "George Lucas", "id": 1, type: "talent"},
+    {"name": "Anjela Nedyalkova", "id": 1102609, type: "talent"},
 ];
 
 //Relationships
@@ -68,6 +70,13 @@ let links_data = [
     {"source": "Robert Carlyle", "target": "Trainspotting", "type": "A"},
     {"source": "Kelly Macdonald", "target": "Trainspotting", "type": "A"},
     {"source": "Irvine Welsh", "target": "Trainspotting", "type": "A"},
+    {"source": "Ewan McGregor", "target": "T2 Trainspotting", "type": "A"},
+    {"source": "Ewen Bremner", "target": "T2 Trainspotting", "type": "A"},
+    {"source": "Jonny Lee Miller", "target": "T2 Trainspotting", "type": "A"},
+    {"source": "Robert Carlyle", "target": "T2 Trainspotting", "type": "A"},
+    {"source": "Kelly Macdonald", "target": "T2 Trainspotting", "type": "A"},
+    {"source": "Irvine Welsh", "target": "T2 Trainspotting", "type": "A"},
+    {"source": "Anjela Nedyalkova", "target": "T2 Trainspotting", "type": "A"},
     {"source": "Ewan McGregor", "target": "Star Wars: Episode I - The Phantom Menace", "type": "A"},
     {"source": "Natalie Portman", "target": "Star Wars: Episode I - The Phantom Menace", "type": "A"},
     {"source": "Samuel L. Jackson", "target": "Star Wars: Episode I - The Phantom Menace", "type": "A"},
@@ -155,11 +164,7 @@ let tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function (d) {
-        if (d.type === 'talent') {
-            return "<strong><a href='{{url_for('" + d.type + "', talent_id=" + d.id + ")}}'>" + d.name + "</a></strong>"
-        } else {
-            return "<strong><a href='{{url_for('" + d.type + "', m_id=" + d.id + ")}}'>" + d.name + "</a></strong>"
-        }
+        return "<strong>" + d.name + "</strong>"
     });
 svg.call(tip);
 
@@ -174,24 +179,36 @@ const show_info = function (d) {
 // draw circles for the nodes
 let node = g.append("g")
     .attr("class", "nodes")
-    .selectAll("circle")
+    .selectAll("g")
     .data(nodes_data)
     .enter()
-    .append("circle")
+    .append("g");
+
+let circles = node.append('circle')
     .attr("r", 15)
     .attr("fill", circleColour)
     .on('mousedown', show_info)
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);
 
+let labels = node.append('text')
+    .text(function (d) {
+        return d.name;
+    })
+    .attr('x', 6)
+    .attr('y', 3)
+    .attr('font-size', '20px');
+
+node.append('title')
+    .text(function (d) {
+        return d.name;
+    });
+
 function tickActions() {
     //update circle positions each tick of the simulation
     node
-        .attr("cx", function (d) {
-            return d.x;
-        })
-        .attr("cy", function (d) {
-            return d.y;
+        .attr('transform', function (d) {
+            return "translate(" + d.x + "," + d.y + ")";
         });
 
     // update link positions - links follow nodes
@@ -248,7 +265,6 @@ function circleColour(d) {
 }
 
 function linkColour(d) {
-    // console.log(d);
     if (d.type === "A") {
         return "green";
     } else {
