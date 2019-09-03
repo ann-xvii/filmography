@@ -15,22 +15,28 @@ def movies(m_id=862):
         movies_dir = dir(movie)
         movies_meta = dict()
         movie_collection = MovieCollection.query.filter_by(film_id=movie_id).first()
+        MovieCollection.close_session()
 
         # related films
         related_films = MoviesMetadata.query.filter_by(collection_id=movie.collection_id).all()
+        MoviesMetadata.close_session()
         related_films = [rf for rf in related_films if rf.id != movie_id]
         avg_rating = Ratings.average(movie_id)
+        Ratings.close_session()
 
         # genres
         genres = Genres.query.filter_by(film_id=movie_id).all()
+        Genres.close_session()
         genre_list = ", ".join([g.name for g in genres]) if genres else None
 
         # directors
         directors = MoviesMetadata.directors(movie_id)
+        MoviesMetadata.close_session()
         movies_meta['directors'] = directors if directors else None
 
         # cast
         top_10_cast = MoviesMetadata.cast(movie_id)
+        MoviesMetadata.close_session()
         movies_meta['cast'] = top_10_cast if top_10_cast else None
 
         if movie.revenue:
@@ -72,8 +78,11 @@ def talent(talent_id=524):
     talent_id = int(talent_id)
 
     talent_info = Talent.query.filter_by(id=talent_id).first()
+    Talent.close_session()
     crew_member_info = Crew.query.filter_by(id=talent_id).all()
+    Crew.close_session()
     cast_member_info = MovieCast.query.filter_by(id=talent_id).all()
+    MovieCast.close_session()
 
     talent_data = dict()
     cast_data = dict()
@@ -85,15 +94,18 @@ def talent(talent_id=524):
         rev = Talent.cumulative_revenue(talent_id)
         rating = Talent.average_rating(talent_id)
         genres = Talent.genre_list(talent_id)
+        Talent.close_session()
         talent_data['cumulative_revenue'] = Money(amount=rev, currency='USD') if rev else None
         talent_data['average_rating'] = round(rating, 2) if rating else None
         talent_data['genres'] = ", ".join([g[0] for g in genres]) if genres else None
 
         if cast_member_info:
             top_n_roles = Talent.top_ten_roles(talent_id)
+            Talent.close_session()
             cast_data['primary_roles'] = top_n_roles if top_n_roles else None
         if crew_member_info:
             crew_roles = Talent.ten_crew_credits(talent_id)
+            Talent.close_session()
             crew_data['crew_roles'] = crew_roles if crew_roles else None
         return render_template('talent.html', title='Talent', talent_data=talent_data, cast_data=cast_data,
                                crew_data=crew_data)

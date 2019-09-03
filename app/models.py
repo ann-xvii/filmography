@@ -22,6 +22,10 @@ class MoviesMetadata(Base):
     query = db_session.query_property()
 
     @staticmethod
+    def close_session(db_session=db_session):
+        db_session.remove()
+
+    @staticmethod
     def directors(movie_id):
         query_string = """
                             select name, id
@@ -53,6 +57,10 @@ class Genres(Base):
     db_session = scoped_session(sessionmaker(bind=engine))
     query = db_session.query_property()
 
+    @staticmethod
+    def close_session(db_session=db_session):
+        db_session.remove()
+
 
 class Crew(Base):
     __table__ = Base.metadata.tables['crew']
@@ -60,12 +68,20 @@ class Crew(Base):
     db_session = scoped_session(sessionmaker(bind=engine))
     query = db_session.query_property()
 
+    @staticmethod
+    def close_session(db_session=db_session):
+        db_session.remove()
+
 
 class MovieCast(Base):
     __table__ = Base.metadata.tables['movie_cast']
 
     db_session = scoped_session(sessionmaker(bind=engine))
     query = db_session.query_property()
+
+    @staticmethod
+    def close_session(db_session=db_session):
+        db_session.remove()
 
 
 class Talent(Base):
@@ -160,6 +176,10 @@ class Talent(Base):
         result = engine.execute(sql).fetchall()
         return result
 
+    @staticmethod
+    def close_session(db_session=db_session):
+        db_session.remove()
+
 
 class Ratings(Base):
     __table__ = Base.metadata.tables['ratings']
@@ -181,6 +201,10 @@ class Ratings(Base):
             result = round(result, 1)
         return result
 
+    @staticmethod
+    def close_session(db_session=db_session):
+        db_session.remove()
+
 
 class MovieCollection(Base):
     __table__ = Base.metadata.tables['movie_collection']
@@ -190,3 +214,7 @@ class MovieCollection(Base):
 
     def __repr__(self):
         return '<MovieCollection {}>'.format(self.name)
+
+    @staticmethod
+    def close_session(db_session=db_session):
+        db_session.remove()

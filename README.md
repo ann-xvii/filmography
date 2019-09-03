@@ -5,11 +5,11 @@ App is available on https://filmography.herokuapp.com/.
 - https://filmography.herokuapp.com/graph
 
 I've created a visualization of a few nodes to demonstrate connectivity.  Click on a node for more information. Click to drag, double click to zoom. Two fingers on trackpad, move up or down to zoom.
-The `/movies` and `/talent` links are hardcoded with initial values, but can be used to query a known id (for example, Christopher Nolan, id 525, can be retrieved with `https://filmography.herokuapp.com/talent/525`, and 
-The Dark Knight, id 155, can be retrieved with `https://filmography.herokuapp.com/movies/155`).  
+The `/movies` and `/talent` endpoints are hardcoded with initial values, but can be used to query a known id (for example, Christopher Nolan, id 525, can be retrieved with `https://filmography.herokuapp.com/talent/525`, and 
+The Dark Knight, id 155, can be retrieved with `https://filmography.herokuapp.com/movies/155`).   
 
 
-I used data from the [Movies Dataset](https://www.kaggle.com/rounakbanik/the-movies-dataset), movies_metadata.csv, credits.csv, ratings.csv. Database was Postgresql.
+I used data from the [Movies Dataset](https://www.kaggle.com/rounakbanik/the-movies-dataset), movies_metadata.csv, credits.csv, ratings.csv and selected Postgresql as a database.
 
 I created the following tables:
 - crew
@@ -81,7 +81,7 @@ I created the following tables:
 I cleaned the data using `jupyter notebook` and `pandas`.  Cleaning consisted of using sensible null types for missing data, addressing duplicates in prospective primary key columns, etc. 
 The `genres` and `movie_collection` tables were created by parsing the data from the `movies` table's `genres` and `belongs_to_collection` columns, respectively.
 I used `credits.csv` to create `movie_cast` and `crew` tables, parsing the `cast` and `crew` columns respectively and adding `film_id` as a reference to `movies.id`.  Related titles
-were retrieved using the `movie_collection` table and the `collection_id` column in the `movies` table.
+were retrieved using the `movie_collection` table and the `collection_id` column in the `movies` table.  An example of a film with a large collection: [https://filmography.herokuapp.com/movies/714](http://localhost:5000/movies/714)
 
 I used `d3.js` for graphing and visualization.
 
