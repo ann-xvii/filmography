@@ -6,7 +6,7 @@ App is available on https://filmography.herokuapp.com/.
 
 I've created a visualization of a few nodes to demonstrate connectivity.  Click on a node for more information. Click to drag, double click to zoom. Two fingers on trackpad, move up or down to zoom.
 The `/movies` and `/talent` endpoints are hardcoded with initial values, but can be used to query a known id (for example, Christopher Nolan, id 525, can be retrieved with `https://filmography.herokuapp.com/talent/525`, and 
-The Dark Knight, id 155, can be retrieved with `https://filmography.herokuapp.com/movies/155`).   
+The Dark Knight, id 155, can be retrieved with `https://filmography.herokuapp.com/movies/155`). Additionally, you can navigate from film to talent and from talent to primary roles.
 
 
 I used data from the [Movies Dataset](https://www.kaggle.com/rounakbanik/the-movies-dataset), movies_metadata.csv, credits.csv, ratings.csv and selected Postgresql as a database.
