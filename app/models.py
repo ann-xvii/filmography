@@ -91,18 +91,28 @@ class Talent(Base):
     query = db_session.query_property()
 
     @staticmethod
-    def cumulative_revenue(talent_id):
+    def get_distinct_films(talent_id):
+        query_string = """select distinct film_id
+                                from movie_cast
+                                where movie_cast.id = {}
+                                union
+                                distinct
+                                select distinct film_id
+                                from crew
+                                where crew.id = {}""".format(talent_id, talent_id)
+
+        sql = text(query_string)
+        result = engine.execute(sql).fetchall()
+        if result:
+            return [str(f[0]) for f in result]
+        else:
+            return []
+
+    @staticmethod
+    def cumulative_revenue(distinct_films):
         query_string = """select sum(revenue)
                             from movies
-                            where id in (
-                                select distinct film_id
-                                from movie_cast
-                                where movie_cast.id = {}
-                                union
-                                distinct
-                                select distinct film_id
-                                from crew
-                                where crew.id = {})""".format(talent_id, talent_id)
+                            where id in ({})""".format(", ".join(distinct_films))
         sql = text(query_string)
         result = engine.execute(sql).first()
         if result:
@@ -110,19 +120,10 @@ class Talent(Base):
         return result
 
     @staticmethod
-    def average_rating(talent_id):
+    def average_rating(distinct_films):
         query_string = """select avg(rating)
                             from ratings
-                            where movieId in (
-                                select distinct film_id
-                                from movie_cast
-                                where movie_cast.id = {}
-                                union
-                                distinct
-                                select distinct film_id
-                                from crew
-                                where crew.id = {}
-)""".format(talent_id, talent_id)
+                            where movieId in ({})""".format(", ".join(distinct_films))
         sql = text(query_string)
         result = engine.execute(sql).first()
         if result:
@@ -130,18 +131,10 @@ class Talent(Base):
         return result
 
     @staticmethod
-    def genre_list(talent_id):
+    def genre_list(distinct_films):
         query_string = """select distinct name
-                            from genres where film_id in (
-                                select distinct film_id
-                                from movie_cast
-                                where movie_cast.id = {}
-                                union
-                                distinct
-                                select distinct film_id
-                                from crew
-                                where crew.id = {})
-                                order by name""".format(talent_id, talent_id)
+                            from genres where film_id in ({})
+                                order by name""".format(", ".join(distinct_films))
         sql = text(query_string)
         result = engine.execute(sql).fetchall()
         return result

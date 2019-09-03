@@ -91,9 +91,11 @@ def talent(talent_id=23659):
     if talent_info:
         talent_data['name'] = talent_info.name
         talent_data['profile_path'] = talent_info.profile_path
-        rev = Talent.cumulative_revenue(talent_id)
-        rating = Talent.average_rating(talent_id)
-        genres = Talent.genre_list(talent_id)
+
+        distinct_films = Talent.get_distinct_films(talent_id)
+        rev = Talent.cumulative_revenue(distinct_films) if distinct_films else None
+        rating = Talent.average_rating(distinct_films) if distinct_films else None
+        genres = Talent.genre_list(distinct_films) if distinct_films else None
         Talent.close_session()
         talent_data['cumulative_revenue'] = Money(amount=rev, currency='USD') if rev else None
         talent_data['average_rating'] = round(rating, 2) if rating else None
