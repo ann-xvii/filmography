@@ -82,9 +82,11 @@
                     {% for related_film in movies_meta.related_films %}
                         <a href="{{ url_for('movies', m_id=related_film.id) }}">
                             <div class="col-sm-3 col-md-3 col-lg-3">
-                                <img class="related-film-img" style="width: 50%; height: 30%;"
-                                     src="https://image.tmdb.org/t/p/w500/{{ related_film.poster_path }}" alt="">
-                                <p class="card-title" style="padding-top: 5px;"><strong>{{ related_film.title }}</strong></p>
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <img class="related-film-img" style="width: 50%; height: 30%;"
+                                         src="https://image.tmdb.org/t/p/w500/{{ related_film.poster_path }}" alt="">
+                                    <p class="card-title" style="overflow: auto; height: 20px;"><strong>{{ related_film.title }}</strong></p>
+                                </div>
                             </div>
                         </a>
                     {% endfor %}
