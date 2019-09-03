@@ -1,3 +1,4 @@
+import logging
 import os
 
 from flask import Flask
@@ -19,5 +20,9 @@ bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 # migration engine
 migrate = Migrate(app, db)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.INFO)
+app.logger.addHandler(stream_handler)
 
 from app import routes, models
