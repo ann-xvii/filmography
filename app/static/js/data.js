@@ -170,9 +170,9 @@ svg.call(tip);
 
 const show_info = function (d) {
     if (d.type === 'movies') {
-        d3.select("#point-info").html("<span>This is <a href='/movies/" + d.id + "'>" + d.name + "</a></span>");
+        d3.select("#point-info").html("<span>More information about <a href='/movies/" + d.id + "'>" + d.name + "</a></span>");
     } else {
-        d3.select("#point-info").html("<span>This is <a href='/talent/" + d.id + "'>" + d.name + "</a></span>");
+        d3.select("#point-info").html("<span>More information about <a href='/talent/" + d.id + "'>" + d.name + "</a></span>");
     }
 };
 

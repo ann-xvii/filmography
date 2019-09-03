@@ -8,9 +8,9 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 #                                                                     passwd=os.environ.get('POSTGRES_PASS'),
 #                                                                     host=os.environ.get('POSTGRES_HOST'),
 #                                                                     port=os.environ.get('POSTGRES_PORT')),
-#     convert_unicode=True, echo=False)
+#     convert_unicode=True, echo=False, pool_size=20, max_overflow=0)
 
-engine = create_engine(os.environ.get('DATABASE_URL'), convert_unicode=True, echo=False)
+engine = create_engine(os.environ.get('DATABASE_URL'), convert_unicode=True, echo=False, pool_size=20, max_overflow=0)
 Base = declarative_base()
 Base.metadata.reflect(engine)
 

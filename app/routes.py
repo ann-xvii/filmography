@@ -6,7 +6,6 @@ from app import app
 from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCast, Crew, Talent
 
 
-@app.route('/')
 @app.route('/movies/<m_id>')
 def movies(m_id=862):
     movie_id = int(m_id)
@@ -104,6 +103,7 @@ def talent(talent_id=524):
                                dated_url_for=dated_url_for)
 
 
+@app.route('/')
 @app.route('/graph')
 def graph():
     return render_template('graph.html', title='Graph', page_name='Graph View')

@@ -79,11 +79,11 @@ I created the following tables:
   
 
 I cleaned the data using `jupyter notebook` and `pandas`.  Cleaning consisted of using sensible null types for missing data, addressing duplicates in prospective primary key columns, etc. 
-The `genres` and `movie_collection` tables where created by parsing the data from the movies table `genres` and `belongs_to_collection` columns, respectively.
+The `genres` and `movie_collection` tables were created by parsing the data from the `movies` table's `genres` and `belongs_to_collection` columns, respectively.
 I used `credits.csv` to create `movie_cast` and `crew` tables, parsing the `cast` and `crew` columns respectively and adding `film_id` as a reference to `movies.id`.  Related titles
 were retrieved using the `movie_collection` table and the `collection_id` column in the `movies` table.
 
-I used `d3.js` for the graph.
+I used `d3.js` for graphing and visualization.
 
 TODO:
 - tests
