@@ -4,17 +4,9 @@ from flask import render_template, url_for
 from money import Money
 from app import app
 from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCast, Crew, Talent
-import numpy as np
-import json
 
 
 @app.route('/')
-def index():
-    m_id = 862
-    return render_template('index.html', title='Filmography', page_name='Movies', m_id=m_id,
-                           dated_url_for=dated_url_for)
-
-
 @app.route('/movies/<m_id>')
 def movies(m_id=862):
     movie_id = int(m_id)

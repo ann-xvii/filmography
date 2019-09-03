@@ -2,14 +2,14 @@ from app import db
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 import os
-from sqlalchemy.orm import relationship, backref, scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 # engine = create_engine('sqlite:///filmography.db', convert_unicode=True, echo=False)
 engine = create_engine(
-    'postgresql://{user}:{passwd}@{host}:{port}/filmography'.format(user=os.getenv('POSTGRES_USER'),
-                                                                    passwd=os.getenv('POSTGRES_PASS'),
-                                                                    host=os.getenv('POSTGRES_HOST'),
-                                                                    port=os.getenv('POSTGRES_PORT')),
+    'postgresql://{user}:{passwd}@{host}:{port}/filmography'.format(user=os.environ.get('POSTGRES_USER'),
+                                                                    passwd=os.environ.get('POSTGRES_PASS'),
+                                                                    host=os.environ.get('POSTGRES_HOST'),
+                                                                    port=os.environ.get('POSTGRES_PORT')),
     convert_unicode=True, echo=False)
 Base = declarative_base()
 Base.metadata.reflect(engine)
