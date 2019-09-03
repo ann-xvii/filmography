@@ -74,27 +74,29 @@
                 {% endif %}
             </div>
         </div>
-        <div class="container">
-            <h3>{{ movie_collection.name }}</h3>
-            <h5>More from collection:</h5>
-            <div class="row">
-                {% for related_film in movies_meta.related_films %}
-                    <a href="{{ url_for('movies', m_id=related_film.id) }}">
-                        <div class="col-sm-3">
-                            <div class="card">
-                                <img class="related-film-img" style="width: 50%; height: 30%;"
-                                     src="https://image.tmdb.org/t/p/w500/{{ related_film.poster_path }}" alt="">
-                                <div class="card-body">
-                                    <h5 class="card-title"></h5>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ related_film.title }}</h5>
+        {% if movies_meta.related_films %}
+            <div class="container">
+                <h3>{{ movie_collection.name }}</h3>
+                <h5>More from collection:</h5>
+                <div class="row">
+                    {% for related_film in movies_meta.related_films %}
+                        <a href="{{ url_for('movies', m_id=related_film.id) }}">
+                            <div class="col-sm-3">
+                                <div class="card">
+                                    <img class="related-film-img" style="width: 50%; height: 30%;"
+                                         src="https://image.tmdb.org/t/p/w500/{{ related_film.poster_path }}" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title"></h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ related_film.title }}</h5>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                {% endfor %}
+                        </a>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}
