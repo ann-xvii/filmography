@@ -3,9 +3,21 @@ p {
 }
 
 .rf-title {
-    height: 30px;
+    height: 50px;
     margin-top: 5px;
     margin-bottom: 20px;
+    overflow: scroll;
+}
+
+.rf-row {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 300px;
+}
+
+.related-film-img {
+    width: 60%;
+    height: 80%;
 }
 
 img.main-img {
