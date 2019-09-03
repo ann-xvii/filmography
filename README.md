@@ -1,8 +1,8 @@
 App is available on https://filmography.herokuapp.com/.
 
-- https://filmography.herokuapp.com/movies/<id>
-- https://filmography.herokuapp.com/talent/<id>
-- https://filmography.herokuapp.com/graph
+- `/movies/<id>`
+- `/talent/<id>`
+- `/graph`
 
 I've created a visualization of a few nodes to demonstrate connectivity.  Click on a node for more information. Click to drag, double click to zoom. Two fingers on trackpad, move up or down to zoom.
 The `/movies` and `/talent` endpoints are hardcoded with initial values, but can be used to query a known id (for example, Christopher Nolan, id 525, can be retrieved with `https://filmography.herokuapp.com/talent/525`, and 

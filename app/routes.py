@@ -7,7 +7,7 @@ from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCa
 
 
 @app.route('/movies/<m_id>')
-def movies(m_id=862):
+def movies(m_id=1893):
     movie_id = int(m_id)
     movie = MoviesMetadata.query.get(movie_id)
 
@@ -74,7 +74,7 @@ def movies(m_id=862):
 
 
 @app.route('/talent/<talent_id>')
-def talent(talent_id=524):
+def talent(talent_id=23659):
     talent_id = int(talent_id)
 
     talent_info = Talent.query.filter_by(id=talent_id).first()
