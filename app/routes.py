@@ -3,7 +3,7 @@ import os
 from flask import render_template, url_for
 from money import Money
 from app import app
-from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCast, Crew, Talent
+from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCast, Crew, Talent, Nodes
 
 
 @app.route('/movies/<m_id>')
@@ -117,8 +117,13 @@ def talent(talent_id=23659):
 
 @app.route('/')
 @app.route('/graph')
-def graph():
-    return render_template('graph.html', title='Graph', page_name='Graph View')
+@app.route('/graph/<n>', defaults={'n': 20})
+def graph(n=20):
+    # temporarily limit number of nodes in view
+    n = 30 if n > 30 else n
+    links_data, nodes_data = Nodes.get_links_and_nodes(n)
+    return render_template('graph.html', title='Graph', page_name='Graph View', links_data=links_data,
+                           nodes_data=nodes_data)
 
 
 @app.context_processor

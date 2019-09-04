@@ -218,3 +218,66 @@ class MovieCollection(Base):
     @staticmethod
     def close_session(db_session=db_session):
         db_session.remove()
+
+
+class Nodes(Base):
+    __table__ = Base.metadata.tables['nodes']
+    __table_args__ = {'extend_existing': True}
+    db_session = scoped_session(sessionmaker(bind=engine))
+    query = db_session.query_property()
+
+    @staticmethod
+    def get_actors(n):
+        query_string = """
+        SELECT distinct mc.name, mc.id, 'talent' as type
+            from movie_cast mc
+            order by mc.id
+            limit {}
+        """.format(n)
+        sql = text(query_string)
+        result = engine.execute(sql).fetchall()
+        return result
+
+    @staticmethod
+    def get_actor_movie_link(n):
+        query_string = """
+            select mc.name, m.title, m.id, 'A' as type
+                from movie_cast mc
+                         inner join movies m on mc.film_id = m.id
+                where mc.id in (
+                    select a.id
+                    from (
+                             SELECT distinct mc.name, mc.id
+                             from movie_cast mc
+                             order by mc.id
+                             limit {}
+                         ) a
+                )
+        """.format(n)
+
+        sql = text(query_string)
+        result = engine.execute(sql).fetchall()
+        return result
+
+    @staticmethod
+    def get_links_and_nodes(n):
+        columns = ('name', 'id', 'type')
+        link_columns = ('source', 'target', 'type')
+
+        node_results = list()
+        noderows = Nodes.get_actors(n)
+        for row in noderows:
+            node_results.append(dict(zip(columns, row)))
+
+        link_results = list()
+
+        movie_rows = Nodes.get_actor_movie_link(n)
+        for mrow in movie_rows:
+            link_row = (mrow[0], mrow[1], mrow[3])
+            link_results.append(dict(zip(link_columns, link_row)))
+
+            m_node_row = (mrow[1], mrow[2], 'movies')
+            node_results.append(dict(zip(columns, m_node_row)))
+        deduplicated_node_results = {frozenset(item.items()): item for item in node_results}.values()
+        final_node_results = [item for item in deduplicated_node_results]
+        return link_results, final_node_results
