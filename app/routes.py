@@ -4,6 +4,7 @@ from flask import render_template, url_for
 from money import Money
 from app import app
 from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCast, Crew, Talent, Nodes
+from app.graph_mock_data import GraphData
 
 
 @app.route('/movies/<m_id>')
@@ -116,14 +117,15 @@ def talent(talent_id=23659):
 
 
 @app.route('/')
+@app.route('/graph/<n>')
 @app.route('/graph')
-@app.route('/graph/<n>', defaults={'n': 20})
 def graph(n=20):
     # temporarily limit number of nodes in view
-    n = 30 if n > 30 else n
-    links_data, nodes_data = Nodes.get_links_and_nodes(n)
-    return render_template('graph.html', title='Graph', page_name='Graph View', links_data=links_data,
-                           nodes_data=nodes_data)
+    # n = 30 if int(n) > 30 else int(n)
+    # links_data, nodes_data = Nodes.get_links_and_nodes(n)
+    # links_data = GraphData.links_data
+    # nodes_data = GraphData.nodes_data
+    return render_template('graph.html', title='Graph', page_name='Graph View')
 
 
 @app.context_processor

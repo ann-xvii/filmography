@@ -24,30 +24,9 @@ img.main-img {
     width: 75%;
 }
 
-path.line {
-    fill: none;
-    stroke: #666;
-    stroke-width: 1.5px;
-}
-
-.domain {
-    stroke-width: 1px;
-}
-
 circle {
     cursor: pointer;
 }
-
-.axis {
-    shape-rendering: crispEdges;
-}
-
-.axis line, .axis path {
-    stroke-width: 1px;
-    stroke: #000;
-    fill: none;
-}
-
 
 /*force graph*/
 .links line {

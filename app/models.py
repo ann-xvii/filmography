@@ -112,8 +112,8 @@ class Talent(Base):
     @staticmethod
     def average_rating(talent_id):
         query_string = """select avg(rating)
-                            from ratings
-                            where movieId in (
+                            from avg_rating
+                            where film_id in (
                                 select distinct film_id
                                 from movie_cast
                                 where movie_cast.id = {}
@@ -189,16 +189,12 @@ class Ratings(Base):
 
     @staticmethod
     def average(movie_id):
-        query_string = """select avg(rating)
-                            from ratings 
-                            left join movies
-                             on ratings.movieid = movies.id
-                              where movieid={}""".format(
+        query_string = """select rating from avg_rating where film_id={}""".format(
             movie_id)
         sql = text(query_string)
-        result = engine.execute(sql).first()[0]
+        result = engine.execute(sql).first()
         if result:
-            result = round(result, 1)
+            result = round(result[0], 1)
         return result
 
     @staticmethod
