@@ -182,7 +182,7 @@ class Talent(Base):
 
 
 class Ratings(Base):
-    __table__ = Base.metadata.tables['ratings']
+    __table__ = Base.metadata.tables['avg_rating']
 
     db_session = scoped_session(sessionmaker(bind=engine))
     query = db_session.query_property()
