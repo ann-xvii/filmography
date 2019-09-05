@@ -13,8 +13,9 @@ def movies(m_id=1893):
     movie = MoviesMetadata.query.get(movie_id)
 
     if movie:
-        movies_dir = dir(movie)
         movies_meta = dict()
+
+        # get movie collection
         movie_collection = MovieCollection.query.filter_by(film_id=movie_id).first()
         MovieCollection.close_session()
 
@@ -22,6 +23,8 @@ def movies(m_id=1893):
         related_films = MoviesMetadata.query.filter_by(collection_id=movie.collection_id).all()
         MoviesMetadata.close_session()
         related_films = [rf for rf in related_films if rf.id != movie_id]
+
+        # average rating
         avg_rating = Ratings.average(movie_id)
         Ratings.close_session()
 
@@ -40,11 +43,10 @@ def movies(m_id=1893):
         MoviesMetadata.close_session()
         movies_meta['cast'] = top_10_cast if top_10_cast else None
 
-        if movie.revenue:
-            formatted_revenue = Money(amount=movie.revenue, currency='USD')
-        else:
-            formatted_revenue = Money(amount=0, currency='USD')
-
+        # revenue
+        formatted_revenue = Money(amount=movie.revenue, currency='USD') if movie.revenue else Money(amount=0,
+                                                                                                    currency='USD')
+        # get spoken languages
         if movie.spoken_languages:
             spoken_languages = ast.literal_eval(movie.spoken_languages)
             lang_list = [g['name'] for g in spoken_languages]
@@ -52,11 +54,10 @@ def movies(m_id=1893):
         else:
             lang_list = None
 
-        if movie.budget:
-            # TODO: location aware and correct currency
-            formatted_budget = Money(amount=movie.budget, currency='USD')
-        else:
-            formatted_budget = Money(amount=0, currency='USD')
+        # budget
+        # TODO: location aware and correct currency
+        formatted_budget = Money(amount=movie.budget, currency='USD') if movie.budget else Money(amount=0,
+                                                                                                 currency='USD')
 
         movies_meta['spoken_languages'] = lang_list
         movies_meta['formatted_budget'] = formatted_budget
@@ -64,9 +65,10 @@ def movies(m_id=1893):
         movies_meta['related_films'] = related_films
         movies_meta['avg_rating'] = avg_rating
         movies_meta['genre_list'] = genre_list
+        movies_meta['movie_collection'] = movie_collection
 
-        return render_template('movies.html', title='Movies', page_name='Movies', movies=movie, movies_dir=movies_dir,
-                               movie_collection=movie_collection, movies_meta=movies_meta,
+        return render_template('movies.html', title='Movies', page_name='Movies', movies=movie,
+                               movies_meta=movies_meta,
                                dated_url_for=dated_url_for)
     else:
         message = 'Movie with id={} not found'.format(m_id)
