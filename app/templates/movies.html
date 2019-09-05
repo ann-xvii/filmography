@@ -2,64 +2,64 @@
 
 {% block app_content %}
     <div>
-        <h1>{{ movies.title }}</h1>
+        <h1>{{ movie.movie_obj.title }}</h1>
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <img class='main-img' src="https://image.tmdb.org/t/p/w500/{{ movies.poster_path }}"
+                <img class='main-img' src="https://image.tmdb.org/t/p/w500/{{ movie.movie_obj.poster_path }}"
                      style="height: 70%; width: 75%"
                      alt="">
             </div>
             <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                 <div>
-                    <p><b>Original Title:</b> {{ movies.original_title }}</p>
+                    <p><b>Original Title:</b> {{ movie.movie_obj.original_title }}</p>
                 </div>
                 <div>
-                    <p><b>Release Date:</b> {{ movies.release_date }} {% if movies.runtime %}| <b>Runtime: </b>
-                        {{ movies.runtime }}{% endif %} {% if movies_meta.genre_list %}| <b>Genres: </b>
-                        {{ movies_meta.genre_list }}{% endif %}</p>
+                    <p><b>Release Date:</b> {{ movie.movie_obj.release_date }} {% if movie.movie_obj.runtime %}| <b>Runtime: </b>
+                        {{ movie.movie_obj.runtime }}{% endif %} {% if movie.genre_list %}| <b>Genres: </b>
+                        {{ movie.genre_list }}{% endif %}</p>
                 </div>
-                {% if movies_meta.formatted_revenue %}
+                {% if movie.formatted_revenue %}
                     <div>
-                        <p><b>Revenue: </b>{{ movies_meta.formatted_revenue }}</p>
+                        <p><b>Revenue: </b>{{ movie.formatted_revenue }}</p>
                     </div>
                 {% endif %}
-                {% if movies.overview %}
+                {% if movie.movie_obj.overview %}
                     <div>
-                        <p><b>Overview: </b><a href="{{ movies.overview }}">{{ movies.overview }}</a></p>
+                        <p><b>Overview: </b><a href="{{ movie.movie_obj.overview }}">{{ movie.movie_obj.overview }}</a></p>
                     </div>
                 {% endif %}
 
-                {% if movies.homepage %}
+                {% if movie.movie_obj.homepage %}
                     <div>
-                        <p><b>Homepage: </b><a href="{{ movies.homepage }}">{{ movies.homepage }}</a></p>
+                        <p><b>Homepage: </b><a href="{{ movie.movie_obj.homepage }}">{{ movie.movie_obj.homepage }}</a></p>
                     </div>
                 {% endif %}
 
                 <div>
                     <p>
                         <b>Efficiency -> </b>
-                        {% if movies_meta.avg_rating %}
-                            <b>Avg Rating:</b> {{ movies_meta.avg_rating }} vs <b>Cost:</b>
-                            {{ movies_meta.formatted_budget }}
+                        {% if movie.avg_rating %}
+                            <b>Avg Rating:</b> {{ movie.avg_rating }} vs <b>Cost:</b>
+                            {{ movie.formatted_budget }}
                         {% else %}
-                            <b>Cost:</b> {{ movies_meta.formatted_budget }}, <b>Avg Rating:</b> Unavailable
+                            <b>Cost:</b> {{ movie.formatted_budget }}, <b>Avg Rating:</b> Unavailable
                         {% endif %}
                     </p>
                 </div>
 
                 <div>
-                    {% if movies_meta.directors %}
+                    {% if movie.directors %}
                         <p><b>Director:</b>
-                            {% for director in movies_meta.directors %}
+                            {% for director in movie.directors %}
                                 <a href="{{ url_for('talent', talent_id=director[1]) }}">{{ director[0] }}</a><br>
                             {% endfor %}
                         </p>
                     {% endif %}
 
-                    {% if movies_meta.cast %}
+                    {% if movie.cast %}
                         <p><b>Featuring:</b></p>
                         <ul>
-                            {% for actor in movies_meta.cast %}
+                            {% for actor in movie.cast %}
                                 <li>
                                     <a href="{{ url_for('talent', talent_id=actor[1]) }}">{{ actor[0] }}</a>
                                 </li>
@@ -67,19 +67,19 @@
                         </ul>
                     {% endif %}
                 </div>
-                {% if movies_meta.spoken_languages %}
+                {% if movie.spoken_languages %}
                     <div><br>
-                        <p><b>Spoken Languages: </b> {{ movies_meta.spoken_languages }}</p>
+                        <p><b>Spoken Languages: </b> {{ movie.spoken_languages }}</p>
                     </div>
                 {% endif %}
             </div>
         </div>
-        {% if movies_meta.related_films %}
+        {% if movie.related_films %}
             <div class="container">
-                <h3>{{ movies_meta.movie_collection.name }}</h3>
+                <h3>{{ movie.movie_collection.name }}</h3>
                 <h5>More from collection:</h5>
                 <div class="row">
-                    {% for related_film in movies_meta.related_films %}
+                    {% for related_film in movie.related_films %}
                         <a href="{{ url_for('movies', m_id=related_film.id) }}">
                             <div class="rf-row col-sm-3 col-md-3 col-lg-3">
                                 <img class="related-film-img"

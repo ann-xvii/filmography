@@ -3,72 +3,15 @@ import os
 from flask import render_template, url_for
 from money import Money
 from app import app
-from app.models import MoviesMetadata, MovieCollection, Ratings, Genres, MovieCast, Crew, Talent, Nodes
-from app.graph_mock_data import GraphData
+from app.models import MovieCast, Crew, Talent
+from app.service import movie as movie_service
 
 
 @app.route('/movies/<m_id>')
 def movies(m_id=1893):
-    movie_id = int(m_id)
-    movie = MoviesMetadata.query.get(movie_id)
-
+    movie = movie_service.get_movie_detail(m_id)
     if movie:
-        movies_meta = dict()
-
-        # get movie collection
-        movie_collection = MovieCollection.query.filter_by(film_id=movie_id).first()
-        MovieCollection.close_session()
-
-        # related films
-        related_films = MoviesMetadata.query.filter_by(collection_id=movie.collection_id).all()
-        MoviesMetadata.close_session()
-        related_films = [rf for rf in related_films if rf.id != movie_id]
-
-        # average rating
-        avg_rating = Ratings.average(movie_id)
-        Ratings.close_session()
-
-        # genres
-        genres = Genres.query.filter_by(film_id=movie_id).all()
-        Genres.close_session()
-        genre_list = ", ".join([g.name for g in genres]) if genres else None
-
-        # directors
-        directors = MoviesMetadata.directors(movie_id)
-        MoviesMetadata.close_session()
-        movies_meta['directors'] = directors if directors else None
-
-        # cast
-        top_10_cast = MoviesMetadata.cast(movie_id)
-        MoviesMetadata.close_session()
-        movies_meta['cast'] = top_10_cast if top_10_cast else None
-
-        # revenue
-        formatted_revenue = Money(amount=movie.revenue, currency='USD') if movie.revenue else Money(amount=0,
-                                                                                                    currency='USD')
-        # get spoken languages
-        if movie.spoken_languages:
-            spoken_languages = ast.literal_eval(movie.spoken_languages)
-            lang_list = [g['name'] for g in spoken_languages]
-            lang_list = ", ".join(lang_list)
-        else:
-            lang_list = None
-
-        # budget
-        # TODO: location aware and correct currency
-        formatted_budget = Money(amount=movie.budget, currency='USD') if movie.budget else Money(amount=0,
-                                                                                                 currency='USD')
-
-        movies_meta['spoken_languages'] = lang_list
-        movies_meta['formatted_budget'] = formatted_budget
-        movies_meta['formatted_revenue'] = formatted_revenue
-        movies_meta['related_films'] = related_films
-        movies_meta['avg_rating'] = avg_rating
-        movies_meta['genre_list'] = genre_list
-        movies_meta['movie_collection'] = movie_collection
-
-        return render_template('movies.html', title='Movies', page_name='Movies', movies=movie,
-                               movies_meta=movies_meta,
+        return render_template('movies.html', title='Movies', page_name='Movies', movie=movie,
                                dated_url_for=dated_url_for)
     else:
         message = 'Movie with id={} not found'.format(m_id)
