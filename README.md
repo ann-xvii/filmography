@@ -67,15 +67,17 @@ I created the following tables:
     - vote_average
     - vote_count
     - collection_id (refers to id in movie_collection table)
-- ratings
-    - userid
-    - movieid
+- avg_rating
+    - film_id
     - rating
-    - timestamp
 - talent
     - id
     - name
     - profile_path
+- nodes
+    - name
+    - id
+    - type
   
 
 I cleaned the data using `jupyter notebook` and `pandas`.  Cleaning consisted of using sensible null types for missing data, addressing duplicates in prospective primary key columns, etc. 
@@ -92,4 +94,6 @@ TODO:
 
 PERFORMANCE CONSIDERATIONS
 To reduce the reponse time to <200ms, first I would create an additional table updated periodically for the aggregate metrics by talent:  cumulative revenue, average rating across filmography.
-I also typically like to have smaller view functions and move logic to a service layer for more straightforward testing.  Additionally, not currently using caching; designing a sound caching strategy would also be useful
+I also typically like to have smaller view functions and move logic to a service layer for more straightforward testing.  Additionally, not currently using caching; designing a sound caching strategy would be useful.
+
+Update: Created a table `avg_rating` with columns `film_id` and `rating`, which has improved the response time. In a real world scenario, would recompute periodically and update the table with new ratings.
