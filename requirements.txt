@@ -61,7 +61,7 @@ prometheus-client==0.7.1
 psutil==5.2.2
 psycopg2==2.8.3
 ptyprocess==0.5.1
-py==1.4.33
+py==1.10.0
 pyasn1==0.4.7
 pyflakes==1.5.0
 Pygments==2.2.0
