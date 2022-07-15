@@ -15,7 +15,7 @@ Bottleneck==1.2.1
 certifi==2019.6.16
 cffi==1.10.0
 decorator==4.0.11
-distributed==1.16.3
+distributed==2021.10.0
 docutils==0.13.1
 dominate==2.4.0
 elasticsearch==7.0.4
